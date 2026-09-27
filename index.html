@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineering Expression Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #060911;
+      --card-bg: rgba(13, 20, 36, 0.72);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(56, 189, 248, 0.45);
+      --cyan: #38bdf8;
+      --cyan-glow: rgba(56, 189, 248, 0.35);
+      --indigo-glow: rgba(129, 140, 248, 0.3);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-grad: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      padding: 1rem;
+      position: relative;
+    }
+
+    /* VISIBLE FLUID AURORA MOTION BACKGROUND (Calibrated 9s-12s, clear glow) */
+    .ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(55px);
+      opacity: 0.55;
+      will-change: transform;
+      animation: floatAurora 4.5s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 540px;
+      height: 540px;
+      background: radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0) 70%);
+      top: -60px;
+      left: 10%;
+    }
+
+    .orb-2 {
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, #818cf8 0%, rgba(129, 140, 248, 0) 70%);
+      bottom: -100px;
+      right: 6%;
+      animation-duration: 5.5s;
+      animation-delay: -1.5s;
+    }
+
+    .orb-3 {
+      width: 460px;
+      height: 460px;
+      background: radial-gradient(circle, #0284c7 0%, rgba(2, 132, 199, 0) 70%);
+      top: 30%;
+      left: 28%;
+      opacity: 0.45;
+      animation-duration: 3.8s;
+      animation-delay: -2s;
+    }
+
+    @keyframes floatAurora {
+      0% {
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(140px, 80px, 0) scale(1.22);
+      }
+      100% {
+        transform: translate3d(-100px, 130px, 0) scale(0.88);
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* HEADER */
+    header {
+      text-align: center;
+      padding: 2.25rem 1rem 1.5rem;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: var(--cyan);
+      padding: 0.45rem 1.15rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.12);
+    }
+
+    .badge-pill span.dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--cyan);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.85rem;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: clamp(0.92rem, 2vw, 1.12rem);
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* NAV TABS */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      margin: 2rem 0;
+      background: rgba(13, 20, 36, 0.7);
+      padding: 0.4rem;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      width: fit-content;
+      align-self: center;
+      max-width: 100%;
+      backdrop-filter: blur(14px);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.75rem 1.6rem;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    .tab-btn.active {
+      background: rgba(30, 41, 59, 0.88);
+      color: var(--cyan);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    /* VIEW PANELS */
+    .view-panel {
+      display: none;
+    }
+
+    .view-panel.active {
+      display: block;
+      animation: panelSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes panelSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* STUDIO CARD CONTAINER */
+    .studio-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-lg);
+      padding: clamp(1.2rem, 3vw, 2.5rem);
+      box-shadow: 0 24px 50px -15px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.3s ease;
+    }
+
+    /* TONE CARDS */
+    .tone-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .tone-card {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--card-border);
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tone-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-grad);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .tone-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.4);
+    }
+
+    .tone-card.active {
+      border-color: var(--cyan);
+      background: rgba(56, 189, 248, 0.08);
+      box-shadow: 0 0 25px var(--cyan-glow);
+    }
+
+    .tone-card.active::before {
+      opacity: 1;
+    }
+
+    .tone-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .tone-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* DUAL WORKSPACE */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 860px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .editor-column {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .column-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0.25rem;
+    }
+
+    .column-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cyan);
+    }
+
+    .btn-action-small {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      padding: 0.38rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-action-small:hover {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--text-main);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .text-box {
+      width: 100%;
+      min-height: 250px;
+      background: rgba(10, 14, 26, 0.75);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .text-box:focus {
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.18);
+    }
+
+    .output-container {
+      position: relative;
+      border-radius: var(--radius-md);
+    }
+
+    .output-box {
+      background: rgba(6, 9, 17, 0.88);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      min-height: 250px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #e2e8f0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-y: auto;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .output-box.placeholder-text {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* GLOWING SHIMMER BORDER */
+    .output-box.generating {
+      border-color: var(--cyan);
+      box-shadow: 0 0 25px var(--cyan-glow), inset 0 0 15px rgba(56, 189, 248, 0.05);
+      animation: glowPulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 15px var(--cyan-glow); }
+      50% { box-shadow: 0 0 30px rgba(129, 140, 248, 0.45); }
+    }
+
+    /* TEXT FADE IN */
+    .fade-in-text {
+      animation: textFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes textFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ACTION BAR */
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--card-border);
+    }
+
+    .engine-status {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+    }
+
+    .btn-primary {
+      background: var(--accent-grad);
+      color: #060911;
+      border: none;
+      padding: 0.95rem 2.4rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.45);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 32px -5px rgba(56, 189, 248, 0.65);
+      filter: brightness(1.08);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* CONCEPT STUDIO */
+    .search-filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-input-wrap {
+      width: 100%;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 0.9rem 1.2rem 0.9rem 2.85rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-pill {
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.6rem 1.15rem;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-pill:hover {
+      color: var(--text-main);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .filter-pill.active {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .concept-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.45rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .concept-card:hover {
+      border-color: var(--card-border-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.6);
+      background: rgba(20, 30, 52, 0.7);
+    }
+
+    .concept-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      width: fit-content;
+    }
+
+    .concept-term {
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .concept-section-title {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      margin-top: 0.25rem;
+    }
+
+    .concept-def {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+
+    .concept-analogy {
+      background: rgba(6, 9, 17, 0.75);
+      border-left: 3px solid var(--cyan);
+      padding: 0.7rem 0.9rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+
+    /* DEVS FOOTER */
+    footer {
+      margin-top: 3.5rem;
+      border-top: 1px solid var(--card-border);
+      padding: 2.5rem 1rem 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+    }
+
+    .devs-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.8rem;
+      max-width: 820px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .dev-badge {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--card-border);
+      padding: 0.48rem 1.05rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .dev-badge.lead-dev {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: var(--cyan);
+      font-weight: 700;
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    .footer-dept {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    /* SPINNER */
+    .spinner {
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(6, 9, 17, 0.3);
+      border-radius: 50%;
+      border-top-color: #060911;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Flow Atmosphere -->
+  <div class="ambient-canvas">
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="badge-pill">
+        <span class="dot"></span>
+        Built by TE 1K Students
+      </div>
+      <h1>Engineering Expression Suite</h1>
+      <p class="subtitle">
+        Bridge raw observations with professional precision. Polish your tone for external viva examinations, lab black-books, and cross-functional engineering communication.
+      </p>
+
+      <nav class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('sentence')">
+          ⚡ Sentence Studio
+        </button>
+        <button class="tab-btn" onclick="switchTab('concept')">
+          📖 Concept Studio
+        </button>
+      </nav>
+    </header>
+
+    <!-- TAB 1: SENTENCE STUDIO -->
+    <div id="sentence-panel" class="view-panel active">
+      <div class="studio-card">
+        
+        <!-- Tone Selector -->
+        <div class="tone-selector">
+          <div class="tone-card active" onclick="setTone('report', this)">
+            <h4>Report Style</h4>
+            <p>Formal academic register, passive voice, and rigorous lab documentation.</p>
+          </div>
+          <div class="tone-card" onclick="setTone('viva', this)">
+            <h4>Viva Ready</h4>
+            <p>Confident, spoken explanation for faculty and external examiners.</p>
+          </div>
+          <div class="tone-card" onclick="setTone('team', this)">
+            <h4>Team Chat</h4>
+            <p>Concise, collaborative Slack/Git updates with clear troubleshooting context.</p>
+          </div>
+          <div class="tone-card" onclick="setTone('simple', this)">
+            <h4>Simple Explanation</h4>
+            <p>Plain, intuitive English using real-world analogies without technical jargon.</p>
+          </div>
+        </div>
+
+        <!-- Dual Workspace -->
+        <div class="workspace-grid">
+          <!-- Input Column -->
+          <div class="editor-column">
+            <div class="column-header">
+              <span class="column-title">Raw / Student Input</span>
+              <button class="btn-action-small" onclick="clearInput()">Clear</button>
+            </div>
+            <textarea id="raw-input" class="text-box" placeholder="Type or paste any observation, question, or message here..."></textarea>
+          </div>
+
+          <!-- Output Column -->
+          <div class="editor-column">
+            <div class="column-header">
+              <span class="column-title" id="output-mode-title">Report Style Output</span>
+              <button class="btn-action-small" id="copy-btn" onclick="copyOutput()">📋 Copy</button>
+            </div>
+            <div class="output-container">
+              <div id="result-output" class="output-box placeholder-text">Select your target tone and click "Transform Expression" to generate professional phrasing...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="action-bar">
+          <div class="engine-status">
+            <span class="status-dot"></span>
+            <span>A TE 1K Innovation | Powered with Auxiliary Gemini Assistance</span>
+          </div>
+          <button id="transform-btn" class="btn-primary" onclick="handleTransform()">
+            <span>Transform Expression ⚡</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: CONCEPT STUDIO -->
+    <div id="concept-panel" class="view-panel">
+      <div class="studio-card">
+        
+        <div class="search-filter-bar">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="concept-search" class="search-input" placeholder="Search terms (e.g., ADC, GPIO, Resistor, Interrupt, Cache, UART)..." oninput="filterConcepts()">
+          </div>
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="setCategoryFilter('all', this)">All (40+)</button>
+            <button class="filter-pill" onclick="setCategoryFilter('hardware', this)">Hardware & Components</button>
+            <button class="filter-pill" onclick="setCategoryFilter('embedded', this)">Microcontrollers & Embedded</button>
+            <button class="filter-pill" onclick="setCategoryFilter('computing', this)">Computing & Architecture</button>
+            <button class="filter-pill" onclick="setCategoryFilter('protocols', this)">Protocols & Comms</button>
+          </div>
+        </div>
+
+        <div id="concepts-grid" class="concepts-grid"></div>
+
+      </div>
+    </div>
+
+    <!-- DEVS FOOTER -->
+    <footer>
+      <div class="footer-title">Engineering Developers (TE 1K)</div>
+      <div class="devs-grid">
+        <span class="dev-badge lead-dev">Jenil Kathiria — Lead Developer</span>
+        <span class="dev-badge">Jhanavi Joshi</span>
+        <span class="dev-badge">Judson Perinbaraj</span>
+        <span class="dev-badge">Kohinkar Aryan</span>
+        <span class="dev-badge">Loytton Colaco</span>
+      </div>
+      <p class="footer-dept">Fr. Agnel Polytechnic, Vashi — Electronics & Computer Engineering</p>
+    </footer>
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. SECURE API CONFIGURATION
+       Search for: PASTE_YOUR_GEMINI_API_KEY_HERE
+       ========================================================================= */
+    let GEMINI_API_KEY = "AQ.Ab8RN6Iluk7Mk5ZMmnqK8OKbLLyYCfRDsiEXtqmL45Orqn68uw";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('key') && urlParams.get('key').trim() !== "") {
+      GEMINI_API_KEY = urlParams.get('key').trim();
+      localStorage.setItem("CACHED_ENG_KEY", GEMINI_API_KEY);
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (localStorage.getItem("CACHED_ENG_KEY")) {
+      GEMINI_API_KEY = localStorage.getItem("CACHED_ENG_KEY");
+    }
+
+    let currentTone = 'report';
+    let currentCategory = 'all';
+
+    const conceptData = [
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Resistor",
+        def: "A passive two-terminal electrical component that implements electrical resistance as a circuit element, dropping voltage and limiting electric current flow according to Ohm's Law (V = IR).",
+        analogy: "Like a squeeze on a water pipe that restricts the flow of water regardless of pump pressure."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Capacitor",
+        def: "A passive component that electrostatically stores potential energy in an electric field between two conducting plates separated by a dielectric medium.",
+        analogy: "Like a flexible rubber diaphragm or miniature water reservoir that absorbs rapid pressure surges and fills in temporary drops."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Inductor",
+        def: "A passive two-terminal electrical component consisting of a coil of wire that stores magnetic energy in its magnetic field when electric current flows through it.",
+        analogy: "Like a heavy water flywheel that resists sudden changes in water speed; takes work to spin up and pushes back when forced to stop."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "PN Junction Diode",
+        def: "A semiconductor device that allows current to flow easily in one direction (forward bias) while presenting very high resistance to current in the opposite direction (reverse bias).",
+        analogy: "A one-way mechanical check valve that allows fluid to pass freely in only one direction."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "BJT (Bipolar Junction Transistor)",
+        def: "A three-terminal semiconductor device (Collector, Base, Emitter) where a small current injection at the Base terminal controls a significantly larger current between Collector and Emitter.",
+        analogy: "Like a sensitive pilot valve where turning a small lever releases a massive torrent of water through a main valve."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "MOSFET",
+        def: "Metal-Oxide-Semiconductor Field-Effect Transistor; a voltage-controlled semiconductor device where an electric charge at the Gate modulates channel conduction between Drain and Source.",
+        analogy: "Like an electric tap valve requiring zero continuous water flow into the handle to turn on; voltage alone controls the flow."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Voltage Regulator (7805 / LDO)",
+        def: "An integrated circuit that automatically maintains a continuous, steady DC output voltage level despite fluctuations in input voltage or varying load currents.",
+        analogy: "A pressure-regulating valve that maintains exactly 50 PSI at your household tap regardless of erratic water main pressures."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Decoupling Capacitor",
+        def: "A capacitor positioned physically adjacent to an IC's supply pins to shunt high-frequency transient switching noise to ground and supply instantaneous micro-bursts of current.",
+        analogy: "A small personal water flask at your desk so you do not suffer a brownout every time you wait for water from the main pump."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Pull-Up / Pull-Down Resistor",
+        def: "A high-value resistor connected between a digital input pin and VCC (or GND) to maintain a deterministic logic HIGH (or LOW) voltage level when external switches are open.",
+        analogy: "A lightweight spring attached to a swinging door that keeps it firmly closed until someone explicitly pushes it open."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Crystal Oscillator",
+        def: "An electronic oscillator circuit that utilizes the mechanical resonance of a vibrating piezoelectric quartz crystal to generate a stable, periodic clock signal.",
+        analogy: "A musical metronome that gives a steady heartbeat so every musician stays locked to the exact same tempo."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Relay",
+        def: "An electrically operated electromagnetic switch that allows a low-power digital signal to safely isolate and switch high-voltage AC or DC mains circuits.",
+        analogy: "An isolated mechanical robot arm that flips a high-voltage wall circuit breaker on your behalf."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "Zener Diode",
+        def: "A specialized diode designed to reliably operate in reverse breakdown, maintaining a constant voltage clamp across its terminals for voltage reference and protection.",
+        analogy: "An emergency overflow spillway that lets water spill out only when a dam reservoir exceeds an exact height."
+      },
+      {
+        tag: "Hardware",
+        cat: "hardware",
+        term: "PCB Traces & Vias",
+        def: "Conductive copper tracks laminated onto non-conductive substrates to route signals, with plated via barrels connecting signals across multi-layer printed circuit boards.",
+        analogy: "Elevated highways and vertical underground elevator shafts connecting different floors in an industrial city."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "GPIO (General Purpose Input/Output)",
+        def: "Configurable digital pins on a microcontroller that software can program in real-time as high-impedance inputs or push-pull/open-drain outputs.",
+        analogy: "A multi-purpose port that can either be set up as a listening microphone or a broadcasting loudspeaker."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "ADC (Analog-to-Digital Converter)",
+        def: "An electronic peripheral that samples continuous real-world analog voltage and quantizes it into discrete multi-bit digital binary numbers.",
+        analogy: "A ruler that measures a continuously rising water level and writes down the height as an exact number in a notebook every second."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "DAC (Digital-to-Analog Converter)",
+        def: "A circuit that transforms binary numerical data into a proportional, continuous real-world electrical voltage or current level.",
+        analogy: "A digital chef reading discrete recipe numbers and outputting smooth, continuous adjustments to a stove burner."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "PWM (Pulse Width Modulation)",
+        def: "A technique for producing variable average analog voltages or power levels from digital outputs by switching the signal ON and OFF at high frequency and modulating the duty cycle.",
+        analogy: "Rapidly toggling a light switch on and off 1000 times a second; spending 20% on and 80% off makes the bulb appear gently dimmed."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "Interrupt (ISR - Service Routine)",
+        def: "A hardware signal that immediately pauses the CPU's regular sequential execution to execute a high-priority handler routine before returning to the background task.",
+        analogy: "Reading a textbook, getting a knock on your door, answering the door immediately, and returning to the exact line in your book."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "Watchdog Timer (WDT)",
+        def: "A dedicated hardware countdown timer that must be cyclically refreshed by running firmware; if software freezes or deadlocks, the timer expires and resets the system.",
+        analogy: "A train conductor's dead-man pedal that must be pressed every 60 seconds; if the driver falls unconscious, the train halts automatically."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "Brownout Reset (BOR)",
+        def: "A supervisory circuit that monitors the microcontroller power rail and initiates a clean, forced hardware reset if the voltage drops below safe operating thresholds.",
+        analogy: "An automatic safety switch that safely shuts down factory machines the moment municipal grid voltage flickers dangerously."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "EEPROM / Flash Memory",
+        def: "Non-volatile semiconductor storage where programmed firmware code and calibration values persist without power degradation.",
+        analogy: "Engraving your notes permanently into stone tablets rather than writing them on a dry-erase whiteboard that wipes clean when unplugged."
+      },
+      {
+        tag: "Embedded",
+        cat: "embedded",
+        term: "Bootloader",
+        def: "A dedicated code routine stored in reserved ROM/Flash that initializes essential hardware and loads the primary application program or accepts new firmware flashing over serial.",
+        analogy: "The building ignition system that starts the generator and unlocks the main entrance doors before employees arrive."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "ALU (Arithmetic Logic Unit)",
+        def: "The fundamental digital circuit within a CPU core that performs arithmetic computations (addition, subtraction) and bitwise boolean logic operations (AND, OR, XOR, NOT).",
+        analogy: "The head mathematician inside an office who handles every raw calculation and true/false logic check."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "Instruction Pipeline",
+        def: "A processor architecture technique where multiple instruction execution phases (Fetch, Decode, Execute, Memory, Writeback) overlap concurrently to maximize instruction throughput.",
+        analogy: "An automobile assembly line where car #2 is being painted while car #1 is having its engine installed and car #3 is being framed."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "Memory Hierarchy (Cache / RAM)",
+        def: "The tiered architectural organization of computer memory, balancing ultra-fast, expensive, low-capacity storage against slower, cheaper, large-capacity storage.",
+        analogy: "Holding pens in your hand (Registers), keeping a notebook on your desk (Cache), and walking to library bookshelves across town (RAM / Storage)."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "DMA (Direct Memory Access)",
+        def: "A specialized peripheral bus master that transfers blocks of data directly between I/O peripherals and system RAM without burdening the CPU with per-byte transfers.",
+        analogy: "A cargo conveyor belt that unloads shipping trucks directly into warehouse storage without making the CEO carry each box."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "Mutex / Semaphore",
+        def: "Synchronization primitives used in multi-threaded programming and RTOS kernels to control access to shared hardware resources and eliminate race conditions.",
+        analogy: "A single bathroom key hanging on a hook; only the person holding the key can enter, and others must wait in line."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "Stack vs Heap Memory",
+        def: "The stack is a fast, contiguous, LIFO memory structure for local function frames and return addresses; the heap is a dynamically allocated pool managed at runtime by programmers.",
+        analogy: "Stack is a neat pile of dinner plates; heap is an open warehouse floor where you claim and label arbitrary floor space."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "Virtual Memory & Paging",
+        def: "An OS memory management scheme that maps physical RAM into contiguous virtual address spaces and pages unused memory blocks to non-volatile secondary storage.",
+        analogy: "Giving each student an identical 1,000-page notebook index, while the school librarian swaps physical sheets in and out behind the desk."
+      },
+      {
+        tag: "Computing",
+        cat: "computing",
+        term: "Context Switching",
+        def: "The process where an operating system kernel saves the exact execution state (registers, program counter) of an active process and loads the saved state of another task.",
+        analogy: "A chess grandmaster bookmarking their moves on board #1, sliding over to play a move on board #2, and returning."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "UART (Serial Communication)",
+        def: "An asynchronous point-to-point serial communication protocol using two dedicated data lines (TX and RX) operating at mutually agreed baud rates without a common clock line.",
+        analogy: "Two people communicating across a field using morse code flashlights at a pre-agreed tempo without an external drum beat."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "I2C (Two-Wire Bus)",
+        def: "A synchronous, multi-master, multi-slave, packet-switched two-wire serial communication bus utilizing Serial Data (SDA) and Serial Clock (SCL) with open-drain pull-ups.",
+        analogy: "A boardroom meeting where one chairman taps the table with a metronome (SCL) and calls out employee badges by address over one shared microphone (SDA)."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "SPI (Serial Peripheral Interface)",
+        def: "A high-speed, four-wire synchronous serial protocol (MOSI, MISO, SCK, CS) operating in full duplex with dedicated chip-select lines for high-throughput peripheral streaming.",
+        analogy: "A high-speed four-lane private pneumatic tube between two desks with a direct activation bell line."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "TCP vs UDP",
+        def: "TCP is a connection-oriented transport protocol guaranteeing packet ordering, error-checking, and retransmissions; UDP is connectionless and sends datagrams with minimal latency and no delivery guarantees.",
+        analogy: "TCP is certified registered post requiring a signed return receipt; UDP is tossing flyers out of an airplane."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "MAC Address vs IP Address",
+        def: "A MAC address is a permanent hardware-level physical address etched into a Network Interface Card; an IP address is a configurable, logical address used for routing across global subnets.",
+        analogy: "Your government identity registration number (MAC) versus your temporary apartment mailing address (IP)."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "CAN Bus",
+        def: "A robust, differential two-wire vehicle bus standard (CAN_H and CAN_L) designed for noise-immune communication between electronic control units without a central host computer.",
+        analogy: "A heavy-duty megaphone cable running through a roaring factory floor where microcontrollers arbitrate message priority automatically."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "Baud Rate",
+        def: "The rate at which information is transferred in a communication channel, expressed as the number of signal units or modulation symbol changes per second.",
+        analogy: "The rhythm or speed at which a telegraph operator taps the key."
+      },
+      {
+        tag: "Protocols",
+        cat: "protocols",
+        term: "DNS (Domain Name System)",
+        def: "A hierarchical, decentralized naming database that translates human-readable hostnames (e.g., google.com) into numerical machine-routable IP addresses (e.g., 142.250.190.46).",
+        analogy: "The phonebook of the internet that turns a person's name into their direct phone number."
+      }
+    ];
+
+    /* =========================================================================
+       3. UI INTERACTION LOGIC
+       ========================================================================= */
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+
+      if (tab === 'sentence') {
+        document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+        document.getElementById('sentence-panel').classList.add('active');
+      } else {
+        document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+        document.getElementById('concept-panel').classList.add('active');
+        renderConcepts();
+      }
+    }
+
+    function setTone(tone, element) {
+      currentTone = tone;
+      document.querySelectorAll('.tone-card').forEach(c => c.classList.remove('active'));
+      element.classList.add('active');
+
+      const titles = {
+        report: 'Report Style Output (Formal / Academic)',
+        viva: 'Viva Ready Output (Spoken / Confident)',
+        team: 'Team Chat Output (Concise / Technical)',
+        simple: 'Simple Explanation Output (Analogy / Plain)'
+      };
+      document.getElementById('output-mode-title').innerText = titles[tone];
+    }
+
+    function clearInput() {
+      const inputEl = document.getElementById('raw-input');
+      const outBox = document.getElementById('result-output');
+      inputEl.value = '';
+      outBox.classList.add('placeholder-text');
+      outBox.classList.remove('generating', 'fade-in-text');
+      outBox.innerText = 'Select your target tone and click "Transform Expression" to generate professional phrasing...';
+      inputEl.focus();
+    }
+
+    function copyOutput() {
+      const outputText = document.getElementById('result-output').innerText;
+      if (!outputText || document.getElementById('result-output').classList.contains('placeholder-text')) {
+        return;
+      }
+      navigator.clipboard.writeText(outputText).then(() => {
+        const copyBtn = document.getElementById('copy-btn');
+        const orig = copyBtn.innerText;
+        copyBtn.innerText = '✅ Copied!';
+        copyBtn.style.color = '#38bdf8';
+        setTimeout(() => {
+          copyBtn.innerText = orig;
+          copyBtn.style.color = '';
+        }, 1800);
+      });
+    }
+
+    /* =========================================================================
+       4. MULTI-MODEL FAILOVER (gemini-3.8-flash -> gemini-3.5-flash -> lite)
+       ========================================================================= */
+    async function callGemini(promptText) {
+      if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_GEMINI_API_KEY_HERE")) {
+        throw new Error("API key is not configured. Please paste your Google AI Studio API key.");
+      }
+
+      const candidateModels = [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite"
+      ];
+
+      let lastError = null;
+
+      for (const model of candidateModels) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: promptText }] }],
+              generationConfig: {
+                temperature: 0.5,
+                maxOutputTokens: 2048
+              }
+            })
+          });
+
+          if (!res.ok) {
+            const errorJson = await res.json().catch(() => ({}));
+            const msg = errorJson.error?.message || `HTTP ${res.status} on ${model}`;
+            lastError = new Error(msg);
+            continue;
+          }
+
+          const data = await res.json();
+          const output = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (output && output.trim()) {
+            return output.trim();
+          }
+        } catch (e) {
+          lastError = e;
+        }
+      }
+
+      throw lastError || new Error("All active Gemini models are currently experiencing high demand. Please try again shortly.");
+    }
+
+    async function handleTransform() {
+      const rawInput = document.getElementById('raw-input').value.trim();
+      const outBox = document.getElementById('result-output');
+      const btn = document.getElementById('transform-btn');
+
+      if (!rawInput) {
+        alert("Please enter a sentence or message first.");
+        return;
+      }
+
+      outBox.classList.remove('placeholder-text');
+      outBox.classList.remove('fade-in-text');
+      outBox.classList.add('generating');
+      outBox.innerText = "Refining linguistic tone via Devs Architecture with Gemini Assist...";
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Processing...`;
+
+      const toneDirectives = {
+        report: "Rewrite this statement into a formal, objective, complete sentence or paragraph written in passive academic voice suitable for a professional report, thesis, or formal document.",
+        viva: "Rewrite this statement into an articulate, confident, and professional spoken answer suitable for speaking verbally to a professor, supervisor, or interviewer.",
+        team: "Rewrite this statement into a concise, polite, and effective workplace message suitable for professional team communication (such as Slack, Teams, or email).",
+        simple: "Rewrite this statement into plain, natural, and accessible English that explains the concept clearly without unnecessary complexity or jargon."
+      };
+
+      const systemPrompt = `You are an expert technical and professional communication editor.
+Target Tone: ${toneDirectives[currentTone]}
+
+USER INPUT:
+"${rawInput}"
+
+STRICT EDITORIAL RULES:
+1. FAITHFUL CONTENT ONLY: Rewrite ONLY the exact thought, event, question, or observation present in the USER INPUT.
+2. ABSOLUTELY ZERO HALLUCINATION: Do NOT invent, assume, or add fictitious details (e.g., if the user asks a greeting or talks about a dog, do NOT introduce microchips, ESP32, circuits, or lab procedures).
+3. NATURAL REGISTER: Keep greetings natural and workplace-appropriate (e.g., "Good morning, Sir. How are you doing?"). Avoid absurdly robotic phrasing.
+4. COMPLETE PUNCTUATION: The output must be completely finished and terminate with a closing period or appropriate punctuation. Never cut off mid-sentence.
+5. CLEAN OUTPUT: Output ONLY the rewritten text without markdown quotes, introductory labels, or meta commentary.`;
+
+      try {
+        const result = await callGemini(systemPrompt);
+        outBox.classList.remove('generating');
+        outBox.classList.add('fade-in-text');
+        outBox.innerText = result;
+      } catch (err) {
+        outBox.classList.remove('generating');
+        outBox.innerText = `API Error: ${err.message}\n\nPlease verify that your API key is valid and has permissions enabled on Google AI Studio.`;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Transform Expression ⚡</span>`;
+      }
+    }
+
+    /* =========================================================================
+       5. CONCEPT STUDIO RENDERING & SEARCH
+       ========================================================================= */
+    function renderConcepts() {
+      const container = document.getElementById('concepts-grid');
+      const query = document.getElementById('concept-search').value.toLowerCase().trim();
+
+      const filtered = conceptData.filter(item => {
+        const matchesCategory = (currentCategory === 'all') || (item.cat === currentCategory);
+        const matchesSearch = item.term.toLowerCase().includes(query) ||
+                              item.def.toLowerCase().includes(query) ||
+                              item.analogy.toLowerCase().includes(query) ||
+                              item.tag.toLowerCase().includes(query);
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem; color: var(--text-muted);">
+            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;">No engineering concepts found matching "${query}"</p>
+            <p style="font-size: 0.85rem;">Try searching for components like Resistor, GPIO, ADC, or Cache.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="concept-card">
+          <span class="concept-tag">${item.tag}</span>
+          <div class="concept-term">${item.term}</div>
+          <div class="concept-section-title">Technical Definition</div>
+          <div class="concept-def">${item.def}</div>
+          <div class="concept-section-title">Everyday Analogy</div>
+          <div class="concept-analogy">${item.analogy}</div>
+        </div>
+      `).join('');
+    }
+
+    function setCategoryFilter(category, element) {
+      currentCategory = category;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      element.classList.add('active');
+      renderConcepts();
+    }
+
+    function filterConcepts() {
+      renderConcepts();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderConcepts();
+    });
+  </script>
+</body>
+</html>
