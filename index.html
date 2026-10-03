@@ -43,7 +43,7 @@
       position: relative;
     }
 
-    /* VISIBLE FLUID AURORA MOTION BACKGROUND (Calibrated 9s-12s, clear glow) */
+    /* FLUID AURORA MOTION BACKGROUND */
     .ambient-canvas {
       position: fixed;
       top: 0;
@@ -94,15 +94,9 @@
     }
 
     @keyframes floatAurora {
-      0% {
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      50% {
-        transform: translate3d(140px, 80px, 0) scale(1.22);
-      }
-      100% {
-        transform: translate3d(-100px, 130px, 0) scale(0.88);
-      }
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(140px, 80px, 0) scale(1.22); }
+      100% { transform: translate3d(-100px, 130px, 0) scale(0.88); }
     }
 
     .container {
@@ -147,6 +141,16 @@
       border-radius: 50%;
       box-shadow: 0 0 10px var(--cyan);
       animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    .badge-ver {
+      background: rgba(56, 189, 248, 0.2);
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0;
+      cursor: pointer;
     }
 
     @keyframes pulseDot {
@@ -409,7 +413,7 @@
       font-style: italic;
     }
 
-    /* GLOWING SHIMMER BORDER */
+    /* GLOWING PULSE */
     .output-box.generating {
       border-color: var(--cyan);
       box-shadow: 0 0 25px var(--cyan-glow), inset 0 0 15px rgba(56, 189, 248, 0.05);
@@ -421,7 +425,6 @@
       50% { box-shadow: 0 0 30px rgba(129, 140, 248, 0.45); }
     }
 
-    /* TEXT FADE IN */
     .fade-in-text {
       animation: textFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
@@ -630,7 +633,7 @@
       color: #94a3b8;
     }
 
-    /* DEVS FOOTER */
+    /* FOOTER & COMPLIANCE */
     footer {
       margin-top: 3.5rem;
       border-top: 1px solid var(--card-border);
@@ -682,6 +685,143 @@
       color: var(--text-muted);
       font-size: 0.82rem;
       line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    .legal-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .legal-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .legal-link:hover {
+      color: var(--cyan);
+      text-decoration: underline;
+    }
+
+    .version-stamp {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+      font-size: 0.78rem;
+      cursor: pointer;
+      padding: 0.2rem 0.5rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 6px;
+    }
+
+    /* MODAL SYSTEM */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: modalFade 0.25s ease-out;
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-content {
+      background: rgba(13, 20, 36, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.15);
+      border-radius: var(--radius-lg);
+      max-width: 680px;
+      width: 100%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.35rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0.25rem;
+      transition: color 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      font-size: 0.88rem;
+      line-height: 1.68;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .modal-body h4 {
+      color: var(--cyan);
+      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .modal-body ul {
+      margin-left: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .modal-body .code-pill {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--cyan);
+      font-size: 0.82rem;
     }
 
     /* SPINNER */
@@ -713,7 +853,7 @@
     <header>
       <div class="badge-pill">
         <span class="dot"></span>
-        Built by TE 1K Students
+        Built by TE 1K Students • <span class="badge-ver" onclick="openModal('changelog')">v26.2.1</span>
       </div>
       <h1>Engineering Expression Suite</h1>
       <p class="subtitle">
@@ -759,7 +899,7 @@
           <!-- Input Column -->
           <div class="editor-column">
             <div class="column-header">
-              <span class="column-title">Raw / Student Input</span>
+              <span class="column-title">Raw / Student Observation</span>
               <button class="btn-action-small" onclick="clearInput()">Clear</button>
             </div>
             <textarea id="raw-input" class="text-box" placeholder="Type or paste any observation, question, or message here..."></textarea>
@@ -814,7 +954,7 @@
       </div>
     </div>
 
-    <!-- DEVS FOOTER -->
+    <!-- FOOTER & LEGAL -->
     <footer>
       <div class="footer-title">Engineering Developers (TE 1K)</div>
       <div class="devs-grid">
@@ -824,29 +964,50 @@
         <span class="dev-badge">Kohinkar Aryan</span>
         <span class="dev-badge">Loytton Colaco</span>
       </div>
-      <p class="footer-dept">Fr. Agnel Polytechnic, Vashi — Electronics & Computer Engineering</p>
+      <p class="footer-dept">Department of Electronics & Computer Engineering — Fr. Agnel Polytechnic, Vashi</p>
+      
+      <div class="legal-links">
+        <a class="legal-link" onclick="openModal('privacy')">Privacy Policy</a>
+        <span>•</span>
+        <a class="legal-link" onclick="openModal('terms')">Terms of Service</a>
+        <span>•</span>
+        <a class="legal-link" onclick="openModal('dataflow')">Server Architecture & Data Flow</a>
+        <span>•</span>
+        <span class="version-stamp" onclick="openModal('changelog')">Build v26.2.1</span>
+      </div>
     </footer>
+  </div>
+
+  <!-- POPUP MODAL SYSTEM -->
+  <div id="legal-modal" class="modal-overlay" onclick="closeModalOnOverlay(event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Policy & Documentation</h3>
+        <button class="modal-close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div id="modal-body-content" class="modal-body"></div>
+    </div>
   </div>
 
   <script>
     /* =========================================================================
-       1. SECURE API CONFIGURATION
-       Search for: PASTE_YOUR_GEMINI_API_KEY_HERE
+       1. PRODUCTION PROXY CONFIGURATION
        ========================================================================= */
-    let GEMINI_API_KEY = "AQ.Ab8RN6Iluk7Mk5ZMmnqK8OKbLLyYCfRDsiEXtqmL45Orqn68uw";
-
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('key') && urlParams.get('key').trim() !== "") {
-      GEMINI_API_KEY = urlParams.get('key').trim();
-      localStorage.setItem("CACHED_ENG_KEY", GEMINI_API_KEY);
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (localStorage.getItem("CACHED_ENG_KEY")) {
-      GEMINI_API_KEY = localStorage.getItem("CACHED_ENG_KEY");
-    }
+    const PROXY_ENDPOINT = "https://techlexicanproxy.kathiriajenil.workers.dev/";
 
     let currentTone = 'report';
     let currentCategory = 'all';
 
+    let cachedOutputs = {
+      report: "",
+      viva: "",
+      team: "",
+      simple: ""
+    };
+
+    /* =========================================================================
+       2. CONCEPT GLOSSARY DATA
+       ========================================================================= */
     const conceptData = [
       {
         tag: "Hardware",
@@ -1145,6 +1306,13 @@
         simple: 'Simple Explanation Output (Analogy / Plain)'
       };
       document.getElementById('output-mode-title').innerText = titles[tone];
+
+      const outBox = document.getElementById('result-output');
+      if (cachedOutputs[tone]) {
+        outBox.classList.remove('placeholder-text', 'generating');
+        outBox.classList.add('fade-in-text');
+        outBox.innerText = cachedOutputs[tone];
+      }
     }
 
     function clearInput() {
@@ -1154,6 +1322,7 @@
       outBox.classList.add('placeholder-text');
       outBox.classList.remove('generating', 'fade-in-text');
       outBox.innerText = 'Select your target tone and click "Transform Expression" to generate professional phrasing...';
+      cachedOutputs = { report: "", viva: "", team: "", simple: "" };
       inputEl.focus();
     }
 
@@ -1175,54 +1344,30 @@
     }
 
     /* =========================================================================
-       4. MULTI-MODEL FAILOVER (gemini-3.8-flash -> gemini-3.5-flash -> lite)
+       4. SECURE PROXY ENGINE (Strict Meaning Preservation)
        ========================================================================= */
     async function callGemini(promptText) {
-      if (!GEMINI_API_KEY || GEMINI_API_KEY.includes("PASTE_YOUR_GEMINI_API_KEY_HERE")) {
-        throw new Error("API key is not configured. Please paste your Google AI Studio API key.");
+      const response = await fetch(PROXY_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: promptText })
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        const errMsg = typeof data.error === 'object'
+          ? (data.error?.message || JSON.stringify(data.error))
+          : (data.error || `Proxy responded with status ${response.status}`);
+        throw new Error(errMsg);
       }
 
-      const candidateModels = [
-        "gemini-3.8-flash",
-        "gemini-3.5-flash",
-        "gemini-3.5-flash-lite"
-      ];
-
-      let lastError = null;
-
-      for (const model of candidateModels) {
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
-          const res = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: promptText }] }],
-              generationConfig: {
-                temperature: 0.5,
-                maxOutputTokens: 2048
-              }
-            })
-          });
-
-          if (!res.ok) {
-            const errorJson = await res.json().catch(() => ({}));
-            const msg = errorJson.error?.message || `HTTP ${res.status} on ${model}`;
-            lastError = new Error(msg);
-            continue;
-          }
-
-          const data = await res.json();
-          const output = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (output && output.trim()) {
-            return output.trim();
-          }
-        } catch (e) {
-          lastError = e;
-        }
+      const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText || !rawText.trim()) {
+        throw new Error("No response was returned from the transformation engine.");
       }
 
-      throw lastError || new Error("All active Gemini models are currently experiencing high demand. Please try again shortly.");
+      return rawText.trim();
     }
 
     async function handleTransform() {
@@ -1231,45 +1376,62 @@
       const btn = document.getElementById('transform-btn');
 
       if (!rawInput) {
-        alert("Please enter a sentence or message first.");
+        alert("Please enter a sentence or observation first.");
         return;
       }
 
-      outBox.classList.remove('placeholder-text');
-      outBox.classList.remove('fade-in-text');
+      outBox.classList.remove('placeholder-text', 'fade-in-text');
       outBox.classList.add('generating');
+      
+      // Preserved original loading phrase
       outBox.innerText = "Refining linguistic tone via Devs Architecture with Gemini Assist...";
       btn.disabled = true;
       btn.innerHTML = `<span class="spinner"></span> Processing...`;
 
-      const toneDirectives = {
-        report: "Rewrite this statement into a formal, objective, complete sentence or paragraph written in passive academic voice suitable for a professional report, thesis, or formal document.",
-        viva: "Rewrite this statement into an articulate, confident, and professional spoken answer suitable for speaking verbally to a professor, supervisor, or interviewer.",
-        team: "Rewrite this statement into a concise, polite, and effective workplace message suitable for professional team communication (such as Slack, Teams, or email).",
-        simple: "Rewrite this statement into plain, natural, and accessible English that explains the concept clearly without unnecessary complexity or jargon."
-      };
+      const systemPrompt = `You are TechLexicon, an expert technical and polytechnic engineering communication calibration assistant.
+Your task is to rewrite the user's input across four distinct professional registers: 'report', 'viva', 'team', and 'simple'.
 
-      const systemPrompt = `You are an expert technical and professional communication editor.
-Target Tone: ${toneDirectives[currentTone]}
+INPUT TO TRANSFORM:
+"""
+${rawInput}
+"""
 
-USER INPUT:
-"${rawInput}"
-
-STRICT EDITORIAL RULES:
-1. FAITHFUL CONTENT ONLY: Rewrite ONLY the exact thought, event, question, or observation present in the USER INPUT.
-2. ABSOLUTELY ZERO HALLUCINATION: Do NOT invent, assume, or add fictitious details (e.g., if the user asks a greeting or talks about a dog, do NOT introduce microchips, ESP32, circuits, or lab procedures).
-3. NATURAL REGISTER: Keep greetings natural and workplace-appropriate (e.g., "Good morning, Sir. How are you doing?"). Avoid absurdly robotic phrasing.
-4. COMPLETE PUNCTUATION: The output must be completely finished and terminate with a closing period or appropriate punctuation. Never cut off mid-sentence.
-5. CLEAN OUTPUT: Output ONLY the rewritten text without markdown quotes, introductory labels, or meta commentary.`;
+STRICT CONSTRAINTS:
+1. ABSOLUTE MEANING PRESERVATION: Preserve 100% of the original meaning, intent, question, or facts. Do NOT add new claims, facts, or assumptions. Do NOT omit or drop any detail.
+2. FULL LENGTH SUPPORT: Support short phrases, sentences, or multi-sentence paragraphs completely. Never truncate, summarize, or omit sentences from longer inputs.
+3. REGISTER GUIDELINES:
+   - "report": Natural, formal, objective academic phrasing in passive voice (for lab manuals and project reports). Avoid bizarre hyper-formal filler (never invent phrases like 'corresponding entity' or 'baseline parameters' unless directly relevant).
+   - "viva": Clear, articulate, confident spoken explanation suitable for verbal defense with external examiners.
+   - "team": Concise, direct, professional communication suitable for Slack, Teams, or Git issues.
+   - "simple": Plain, clear, everyday English that directly conveys the thought without unnecessary technical jargon or forced, silly metaphors.
+4. FORMAT: Return ONLY a valid JSON object with keys "report", "viva", "team", "simple". Do not wrap in markdown tags (\`\`\`json).`;
 
       try {
-        const result = await callGemini(systemPrompt);
+        const responseText = await callGemini(systemPrompt);
+        
+        let parsed;
+        try {
+          const cleanedText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
+          parsed = JSON.parse(cleanedText);
+        } catch (jsonErr) {
+          parsed = { [currentTone]: responseText };
+        }
+
+        cachedOutputs = {
+          report: parsed.report || responseText,
+          viva: parsed.viva || responseText,
+          team: parsed.team || responseText,
+          simple: parsed.simple || responseText
+        };
+
         outBox.classList.remove('generating');
         outBox.classList.add('fade-in-text');
-        outBox.innerText = result;
+        outBox.innerText = cachedOutputs[currentTone] || responseText;
+
       } catch (err) {
         outBox.classList.remove('generating');
-        outBox.innerText = `API Error: ${err.message}\n\nPlease verify that your API key is valid and has permissions enabled on Google AI Studio.`;
+        const readableMsg = typeof err === 'object' && err.message ? err.message : String(err);
+        outBox.innerText = `Engine Notice: ${readableMsg}\n\nPlease check your internet connection or try again shortly.`;
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<span>Transform Expression ⚡</span>`;
@@ -1324,6 +1486,96 @@ STRICT EDITORIAL RULES:
     function filterConcepts() {
       renderConcepts();
     }
+
+    /* =========================================================================
+       6. MODAL & LEGAL DOCUMENTATION ENGINE
+       ========================================================================= */
+    const modalContent = {
+      privacy: {
+        title: "Privacy Policy",
+        body: `
+          <h4>1. Zero-Identity & Ephemeral Execution</h4>
+          <p>TechLexicon operates under a strict Zero-Identity architecture. We do not require, collect, or store personal identifiers such as names, phone numbers, email addresses, or academic student roll numbers.</p>
+          
+          <h4>2. Transient Data Handling</h4>
+          <p>Text observations provided in the Sentence Studio are held purely in transient volatile memory (RAM) while processing and are never written to any persistent external database or storage disk by TechLexicon.</p>
+          
+          <h4>3. Local Client Storage</h4>
+          <p>TechLexicon uses browser <span class="code-pill">localStorage</span> solely on your client device for caching application settings and presentation states. This local data never leaves your browser.</p>
+        `
+      },
+      terms: {
+        title: "Terms of Service",
+        body: `
+          <h4>1. Purpose & Intended Use</h4>
+          <p>TechLexicon is an auxiliary educational suite engineered to assist polytechnic, diploma, and undergraduate engineering students in calibrating academic voice, laboratory journal documentation, and viva defenses.</p>
+          
+          <h4>2. Output Responsibility</h4>
+          <p>Tone transformations are generated by artificial intelligence. Students and researchers remain solely responsible for validating technical precision and experimental accuracy before submitting reports, MSBTE records, or viva presentations.</p>
+          
+          <h4>3. Acceptable Use</h4>
+          <p>Users agree not to deploy automated scrapers, flood bots, or distributed denial-of-service (DDoS) requests against the platform endpoint, or attempt prompt injection to bypass safety controls.</p>
+        `
+      },
+      dataflow: {
+        title: "Server Architecture & Data Flow",
+        body: `
+          <h4>1. Secure Two-Hop Architecture</h4>
+          <p>To eliminate client-side API key vulnerabilities, TechLexicon routes requests through an encrypted relay pipeline:</p>
+          <ul>
+            <li><strong>Client Device:</strong> Transmits raw text over encrypted HTTPS. Zero API keys reside on your device.</li>
+            <li><strong>Cloudflare Edge Network:</strong> Requests pass through Cloudflare edge nodes (including regional points of presence across India, such as Mumbai). Authentication tokens are securely injected from an encrypted server vault in RAM. No user data is stored.</li>
+            <li><strong>Google Cloud Data Centers:</strong> Text prompts are processed via Google AI Studio's Gemini 3.8 Flash infrastructure, hosted across Google Cloud server clusters primarily in the <strong>United States (US)</strong> and distributed globally.</li>
+          </ul>
+          
+          <h4>2. Compliance Notice</h4>
+          <p>Processing is governed by Google’s Generative AI terms and data governance protocols for cloud-hosted developer APIs.</p>
+        `
+      },
+      changelog: {
+        title: "Release Changelog",
+        body: `
+          <h4>Version 26.2.1 (Current Release)</h4>
+          <ul>
+            <li><strong>Cloudflare Edge Proxy Vault:</strong> Migrated to an encrypted serverless edge proxy. Hardcoded API keys and URL parameter exposures are completely eliminated.</li>
+            <li><strong>Origin Security Lockdown:</strong> Restricted edge access exclusively to the official GitHub Pages domain and local developer environments.</li>
+            <li><strong>Strict Semantic Calibration:</strong> Recalibrated the system prompt to enforce 100% meaning preservation, eliminating forced analogies and robotic exaggerations.</li>
+            <li><strong>Multi-Sentence & Paragraph Support:</strong> Full fidelity transformation for comprehensive lab notes and project abstracts without truncation.</li>
+            <li><strong>Simultaneous Multi-Tone JSON:</strong> Single inference pass returns all 4 registers (Report, Viva, Team, Simple) for instant zero-latency tab switching.</li>
+            <li><strong>Full Legal Transparency:</strong> Embedded interactive modals for Privacy Policy, Terms of Service, and Server Architecture disclosures.</li>
+          </ul>
+
+          <h4 style="margin-top: 1rem;">Version 26.1.1 (Legacy Prototype)</h4>
+          <ul>
+            <li>Initial public deployment with Sentence Studio and Concept Studio.</li>
+            <li>Direct client-side fetch integration with URL key caching.</li>
+          </ul>
+        `
+      }
+    };
+
+    function openModal(type) {
+      const data = modalContent[type];
+      if (!data) return;
+
+      document.getElementById('modal-title').innerText = data.title;
+      document.getElementById('modal-body-content').innerHTML = data.body;
+      document.getElementById('legal-modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('legal-modal').classList.remove('active');
+    }
+
+    function closeModalOnOverlay(e) {
+      if (e.target === document.getElementById('legal-modal')) {
+        closeModal();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
       renderConcepts();
